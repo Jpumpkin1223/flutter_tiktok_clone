@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok_clone/constants/gaps.dart';
 import 'package:flutter_tiktok_clone/constants/sizes.dart';
-import 'package:flutter_tiktok_clone/screens/interest_screen.dart';
+import 'package:flutter_tiktok_clone/screens/interests_screen.dart';
 import 'package:flutter_tiktok_clone/widgets/form_button.dart';
 import 'package:intl/intl.dart';
 
