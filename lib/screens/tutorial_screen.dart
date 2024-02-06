@@ -5,40 +5,46 @@ import 'package:flutter_tiktok_clone/constants/sizes.dart';
 
 enum Direction { right, left }
 
-enum Page { first, second }
-
 class TutorialScreen extends StatefulWidget {
-  const TutorialScreen({super.key});
+  const TutorialScreen({Key? key}) : super(key: key);
 
   @override
   State<TutorialScreen> createState() => _TutorialScreenState();
 }
 
 class _TutorialScreenState extends State<TutorialScreen> {
+  int _pageIndex = 0;
   Direction _direction = Direction.right;
-  Page _showingPage = Page.first;
+  final List<Widget> _pages = [
+    const TutorialPage(
+      key: ValueKey(0),
+      title: "Watch cool videos!",
+      description: "Videos are personalized for you based on what you watch, like, and share.",
+    ),
+    const TutorialPage(
+      key: ValueKey(1),
+      title: "Follow the rules",
+      description: "Videos are personalized for you based on what you watch, like, and share.",
+    ),
+    const TutorialPage(
+      key: ValueKey(2),
+      title: "Create your own videos",
+      description: "Share your videos with friends and followers.",
+    ),
+  ];
 
   void _onPanUpdate(DragUpdateDetails details) {
-    if (details.delta.dx > 0) {
-      setState(() {
-        _direction = Direction.right;
-      });
-    } else {
-      setState(() {
-        _direction = Direction.left;
-      });
-    }
+    _direction = details.delta.dx > 0 ? Direction.right : Direction.left;
+    setState(() {});
   }
 
   void _onPanEnd(DragEndDetails detail) {
-    if (_direction == Direction.left) {
-      setState(() {
-        _showingPage = Page.second;
-      });
-    } else {
-      setState(() {
-        _showingPage = Page.first;
-      });
+    if (_direction == Direction.left && _pageIndex < _pages.length - 1) {
+      _pageIndex++;
+      setState(() {});
+    } else if (_direction == Direction.right && _pageIndex > 0) {
+      _pageIndex--;
+      setState(() {});
     }
   }
 
@@ -51,63 +57,65 @@ class _TutorialScreenState extends State<TutorialScreen> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.size24),
           child: SafeArea(
-            child: AnimatedCrossFade(
-              firstChild: Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
-                Gaps.v80,
-                Text(
-                  "Watch cool videos!",
-                  style: TextStyle(
-                    fontSize: Sizes.size40,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Gaps.v16,
-                Text(
-                  "Videos are personalized for you based on what you watch, like, and share.",
-                  style: TextStyle(
-                    fontSize: Sizes.size20,
-                  ),
-                )
-              ]),
-              secondChild: Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
-                Gaps.v80,
-                Text(
-                  "Follow the rules",
-                  style: TextStyle(
-                    fontSize: Sizes.size40,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Gaps.v16,
-                Text(
-                  "Videos are personalized for you based on what you watch, like, and share.",
-                  style: TextStyle(
-                    fontSize: Sizes.size20,
-                  ),
-                )
-              ]),
-              crossFadeState: _showingPage == Page.first ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
+              child: _pages[_pageIndex],
             ),
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: Sizes.size24,
-                horizontal: Sizes.size24,
-              ),
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: _showingPage == Page.first ? 0 : 1,
-                child: CupertinoButton(
-                  onPressed: () {},
-                  color: Theme.of(context).primaryColor,
-                  child: const Text('Enter the app!'),
+        bottomNavigationBar: _pageIndex == _pages.length - 1
+            ? BottomAppBar(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Sizes.size24,
+                    horizontal: Sizes.size24,
+                  ),
+                  child: CupertinoButton(
+                    onPressed: () {
+                      // Navigate or do something else
+                    },
+                    color: Theme.of(context).primaryColor,
+                    child: const Text('Enter the app!'),
+                  ),
                 ),
-              )),
-        ),
+              )
+            : null,
       ),
+    );
+  }
+}
+
+class TutorialPage extends StatelessWidget {
+  const TutorialPage({
+    Key? key,
+    required this.title,
+    required this.description,
+  }) : super(key: key);
+
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Gaps.v80,
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: Sizes.size40,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Gaps.v16,
+        Text(
+          description,
+          style: const TextStyle(
+            fontSize: Sizes.size20,
+          ),
+        ),
+      ],
     );
   }
 }
