@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok_clone/constants/sizes.dart';
+import 'package:flutter_tiktok_clone/screens/interests_screen.dart';
 import 'package:flutter_tiktok_clone/screens/main_screen.dart';
+import 'package:flutter_tiktok_clone/widgets/nav_tab.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +32,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: MainScreen());
+        home: const MainScreen());
   }
 }
