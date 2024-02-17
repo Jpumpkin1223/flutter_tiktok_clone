@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok_clone/constants/gaps.dart';
 import 'package:flutter_tiktok_clone/constants/sizes.dart';
+import 'package:flutter_tiktok_clone/screens/video_timeline_screen.dart';
 import 'package:flutter_tiktok_clone/widgets/nav_tab.dart';
 import 'package:flutter_tiktok_clone/widgets/post_video_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,19 +39,19 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           Offstage(
             offstage: _selectedIndex != 0,
-            child: const StfScreen(),
+            child: const VideoTimelineScreen(),
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const StfScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectedIndex != 3,
-            child: const StfScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectedIndex != 4,
-            child: const StfScreen(),
+            child: Container(),
           )
         ],
       ),
@@ -98,47 +99,6 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class StfScreen extends StatefulWidget {
-  const StfScreen({super.key});
-  @override
-  State<StfScreen> createState() => _StfScreenState();
-}
-
-class _StfScreenState extends State<StfScreen> {
-  int _clicks = 0;
-  void _increase() {
-    setState(() {
-      _clicks = _clicks + 1;
-    });
-  }
-
-  @override
-  void dispose() {
-    print(_clicks);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print('im built!');
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "$_clicks",
-            style: const TextStyle(fontSize: 48),
-          ),
-          TextButton(
-            onPressed: _increase,
-            child: const Text('+'),
-          )
-        ],
       ),
     );
   }
